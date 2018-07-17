@@ -10,7 +10,48 @@
   <div id='app'></div>
 
   <script type='text/babel'>
-    
+    const LANGS = ["c++", "java", "javascript", "php", "python", "ruby"]
+
+    window.API = {
+      getRepos(lang){
+        return fetch(`https://api.github.com/search/repositories?q=language:${lang}+sort:stars&order:desc`)
+          .then(response => response.json())
+          .then(json => {
+            return json
+          })
+      }
+    }
+   const result = window.API.getRepos("php").then(resp => console.log(resp))
+  
+
+  function LangList(props){
+    return (
+      <ul>
+        {props.langs.map(elem => (
+          <li key={elem}>
+            {elem}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  class App extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {  }
+    }
+    render() { 
+      return ( 
+        <LangList langs={LANGS} />
+       );
+    }
+  }
+   
+  ReactDOM.render(
+    <App />,
+    document.getElementById('app')
+  )
  
   </script>
 </body>
