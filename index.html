@@ -6,10 +6,6 @@
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
   <style>
-    .grid {
-
-    }
-
     .grid__elem {
       display: inline-block;
       width: 300px;
@@ -37,9 +33,24 @@
           })
       }
     }
-   const result = window.API.getRepos("php").then(resp => console.log(resp))
   
+ // LOADING component 
+  class Loading extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { 
+        text: "Loading"
+       }
+    }
+    render() { 
+      return ( 
+        <div>{this.state.text}</div>
+      );
+    }
+  }
 
+  
+// LANGLIST component
   function LangList(props){
     return (
       <ul>
@@ -54,6 +65,7 @@
     )
   }
 
+// GRID component
   function Grid(props){
     return (
       <div className="grid">
@@ -66,6 +78,7 @@
     )
   }
 
+// APP component
   class App extends React.Component {
     constructor(props) {
       super(props);
@@ -73,18 +86,23 @@
         langs: props.langs, 
         repos: [],
         currentLang: "",
-        defaultLang: props.defaultLang
+        defaultLang: props.defaultLang,
+        loading: true
       }
       this.changeLanguage = this.changeLanguage.bind(this)
     }
 
 
     changeLanguage(lang){
+      this.setState({
+        loading: true
+      })
       lang === "All" ? lang = "" : null 
       API.getRepos(lang).then(resp => {
         this.setState({
           repos: resp.items,
-          currentLang: lang === "" ? "All" : lang
+          currentLang: lang === "" ? "All" : lang,
+          loading: false
         })
       })
     }
@@ -93,7 +111,15 @@
       this.changeLanguage(this.state.defaultLang)
     }
 
-    render() { 
+    render() {
+      if(this.state.loading){
+        return (
+         <div> 
+          <LangList langs={this.state.langs} changeLanguage={this.changeLanguage} currentLang={this.state.currentLang}/>
+          <Loading />
+         </div> 
+        )
+      } 
       return (
         <div> 
           <LangList langs={this.state.langs} changeLanguage={this.changeLanguage} currentLang={this.state.currentLang}/>
@@ -102,7 +128,8 @@
        );
     }
   }
-   
+
+// RENDER
   ReactDOM.render(
     <App langs={LANGS} defaultLang="All"/>,
     document.getElementById('app')
