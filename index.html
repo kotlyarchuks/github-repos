@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Github Repos</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
@@ -10,18 +11,28 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      margin-bottom: 50px;
     }
 
     .grid__elem {
       display: inline-block;
-      width: 300px;
+      width: 350px;
       border: 0.5px solid lightgray;
       text-align: center;
       padding: 10px;
+      margin: 5px;
     }
 
     .active {
       font-weight: bold
+    }
+
+    .elem__desc {
+      height: 80px;
+    }
+
+    .elem__stats > span {
+      margin-right: 15px;
     }
   </style>
 </head>
@@ -82,7 +93,11 @@
         {props.repos.map(elem => (
           <div className="grid__elem" key={elem.id}>
             <h4><a href={elem.html_url} target="blank">{elem.name}</a></h4>
-            <p>{API.shorten(elem.description)}</p>
+            <p className="elem__desc">{API.shorten(elem.description)}</p>
+            <div className="elem__stats">
+              <span><i className="far fa-star"></i> {elem.stargazers_count}</span>
+              <span><i className="fas fa-code-branch"></i> {elem.forks_count}</span>
+            </div>
           </div>
         ))}
       </div>
