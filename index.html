@@ -22,7 +22,7 @@
   <div id='app'></div>
 
   <script type='text/babel'>
-    const LANGS = ["c++", "java", "javascript", "php", "python", "ruby"]
+    const LANGS = ["All", "c++", "java", "javascript", "php", "python", "ruby"]
 
     window.API = {
       getRepos(lang){
@@ -39,11 +39,19 @@
   function LangList(props){
     return (
       <ul>
-        {props.langs.map(elem => (
-          <li key={elem} onClick={() => props.changeLanguage(elem)}>
-            {elem}
-          </li>
-        ))}
+        {props.langs.map(elem => {
+          return props.currentLang === elem ? (
+            <li key={elem} onClick={() => props.changeLanguage(elem)}>
+              <b>{elem}</b>
+            </li>
+          )
+          :
+          (
+            <li key={elem} onClick={() => props.changeLanguage(elem)}>
+              {elem}
+            </li>
+          )  
+        })}
       </ul>
     )
   }
@@ -66,31 +74,31 @@
       this.state = {
         langs: props.langs, 
         repos: [],
-        currentLang: ""
+        currentLang: "",
+        defaultLang: props.defaultLang
       }
       this.changeLanguage = this.changeLanguage.bind(this)
     }
 
-    // componentDidMount() {
-    //   API.getRepos(lang).then(resp => {
-    //     this.setState({
-    //       repos: resp.items
-    //     })
-    //   })
-    // }
 
     changeLanguage(lang){
+      lang === "All" ? lang = "" : null 
       API.getRepos(lang).then(resp => {
         this.setState({
-          repos: resp.items
+          repos: resp.items,
+          currentLang: lang === "" ? "All" : lang
         })
       })
+    }
+
+    componentDidMount() {
+      this.changeLanguage(this.state.defaultLang)
     }
 
     render() { 
       return (
         <div> 
-          <LangList langs={this.state.langs} changeLanguage={this.changeLanguage}/>
+          <LangList langs={this.state.langs} changeLanguage={this.changeLanguage} currentLang={this.state.currentLang}/>
           <Grid repos={this.state.repos}/>
         </div>
        );
@@ -98,7 +106,7 @@
   }
    
   ReactDOM.render(
-    <App langs={LANGS}/>,
+    <App langs={LANGS} defaultLang="All"/>,
     document.getElementById('app')
   )
  
