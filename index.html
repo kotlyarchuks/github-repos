@@ -6,11 +6,18 @@
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
   <style>
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     .grid__elem {
       display: inline-block;
       width: 300px;
       border: 0.5px solid lightgray;
       text-align: center;
+      padding: 10px;
     }
 
     .active {
@@ -31,8 +38,11 @@
           .then(json => {
             return json
           })
+      },
+      shorten(str){
+        return str && str.length > 110 ? str.slice(0, 110)+"..." : str
       }
-    }
+    } 
   
  // LOADING component 
   class Loading extends React.Component {
@@ -72,6 +82,7 @@
         {props.repos.map(elem => (
           <div className="grid__elem" key={elem.id}>
             <h4><a href={elem.html_url} target="blank">{elem.name}</a></h4>
+            <p>{API.shorten(elem.description)}</p>
           </div>
         ))}
       </div>
