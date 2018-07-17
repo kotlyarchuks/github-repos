@@ -6,35 +6,8 @@
   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
-  <style>
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 50px;
-    }
-
-    .grid__elem {
-      display: inline-block;
-      width: 350px;
-      border: 0.5px solid lightgray;
-      text-align: center;
-      padding: 10px;
-      margin: 5px;
-    }
-
-    .active {
-      font-weight: bold
-    }
-
-    .elem__desc {
-      height: 80px;
-    }
-
-    .elem__stats > span {
-      margin-right: 15px;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <div id='app'></div>
@@ -74,7 +47,7 @@
 // LANGLIST component
   function LangList(props){
     return (
-      <ul>
+      <ul className="lang-list">
         {props.langs.map(elem => {
           return (
             <li className={props.currentLang === elem ? "active" : ""} key={elem} onClick={() => props.changeLanguage(elem)}>
@@ -92,7 +65,7 @@
       <div className="grid">
         {props.repos.map(elem => (
           <div className="grid__elem" key={elem.id}>
-            <h4><a href={elem.html_url} target="blank">{elem.name}</a></h4>
+            <h4><a className="elem__link" href={elem.html_url} target="blank">{elem.name}</a></h4>
             <p className="elem__desc">{API.shorten(elem.description)}</p>
             <div className="elem__stats">
               <span><i className="far fa-star"></i> {elem.stargazers_count}</span>
