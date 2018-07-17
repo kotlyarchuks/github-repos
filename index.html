@@ -16,6 +16,10 @@
       border: 0.5px solid lightgray;
       text-align: center;
     }
+
+    .active {
+      font-weight: bold
+    }
   </style>
 </head>
 <body>
@@ -40,17 +44,11 @@
     return (
       <ul>
         {props.langs.map(elem => {
-          return props.currentLang === elem ? (
-            <li key={elem} onClick={() => props.changeLanguage(elem)}>
-              <b>{elem}</b>
-            </li>
-          )
-          :
-          (
-            <li key={elem} onClick={() => props.changeLanguage(elem)}>
+          return (
+            <li className={props.currentLang === elem ? "active" : ""} key={elem} onClick={() => props.changeLanguage(elem)}>
               {elem}
             </li>
-          )  
+          )
         })}
       </ul>
     )
